@@ -1,42 +1,41 @@
 document.addEventListener('DOMContentLoaded', function() {
-    getUserInfo()
+    const userInfoParagraph = document.getElementById('userInfo');
+    const logoutButton = document.getElementById('logoutButton');
+
+    // Fetch user information
+    fetchUserInfo()
         .then(user => {
-            if (user) {
-                displayUserInfo(user);
-            } else {
-                
-                alert('User not authenticated. Redirecting to login page.');
-                window.location.href = 'auth.html';
-            }
+            userInfoParagraph.textContent = `Welcome, ${user.username} (${user.email})`;
         })
         .catch(error => {
-            console.error('Error fetching user info:', error);
-            
-            alert('Error fetching user info. Redirecting to login page.');
-            window.location.href = 'auth.html';
+            console.error('', error);
+            userInfoParagraph.textContent = '';
         });
 
-    function getUserInfo() {
+    // Logout button click event
+    logoutButton.addEventListener('click', function() {
+        // Clear the authentication token (replace 'authToken' with your actual cookie name)
+        document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+        // Redirect to the authentication page or perform any other action
+        window.location.href = 'auth.html';
+    });
+
+    function fetchUserInfo() {
         return new Promise((resolve, reject) => {
             fetch('http://localhost:4000/api/user-info')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(resolve)
-                .catch(reject);
+                .catch(error => {
+                    console.error('', error);
+                    reject(error);
+                });
         });
-    }
-
-    function displayUserInfo(user) {
-        const usernameLabel = document.getElementById('usernameLabel');
-        const emailLabel = document.getElementById('emailLabel');
-
-        usernameLabel.textContent += ` ${user.username}`;
-        emailLabel.textContent += ` ${user.email}`;
-    }
-
-    function logout() {
-    
-        alert('Logged out. Redirecting to login page.');
-        window.location.href = 'auth.html';
     }
 });
 

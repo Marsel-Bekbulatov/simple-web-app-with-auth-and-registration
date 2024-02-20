@@ -75,19 +75,13 @@ app.post('/api/auth', async (req, res) => {
     }
 });
 
-app.get('/api/user-info', async (req, res) => {
+app.get('http://localhost:4000/api/user-info', async (req, res) => {
     const authToken = req.cookies.authToken;
 
     if (!authToken) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const user = {
-        username: 'DemoUser',
-        email: 'demo@example.com',
-    };
-
-    res.status(200).json(user);
 });
 
 
