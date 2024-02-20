@@ -18,7 +18,7 @@ This is a simple web application with authentication and registration functional
 
 1. Clone the repository:
 
-   git clone https://github.com/your-username/simple-web-app-with-auth.git
+https://github.com/Marsel-Bekbulatov/simple-web-app-with-auth-and-registration
 
 ## Install dependencies:
 
