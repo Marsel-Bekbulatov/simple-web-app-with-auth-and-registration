@@ -10,8 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         registerUser(username, email, password)
             .then(response => {
-                alert('Registration successful!');
-                // Redirect to login page or perform any other action
+                if (response.success) {
+                    alert('Registration successful!');
+                  
+                } else {
+                    alert('Registration failed. Please try again.');
+                }
             })
             .catch(error => {
                 alert('Registration failed. Please try again.');
@@ -21,11 +25,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function registerUser(username, email, password) {
         return new Promise((resolve, reject) => {
-            // Send registration data to backend API using fetch or XMLHttpRequest
-            // For now, let's just simulate a successful registration after 1 second
-            setTimeout(() => {
-                resolve({ success: true });
-            }, 1000);
+            fetch('http://localhost:4000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, email, password }),
+            })
+            .then(response => response.json())
+            .then(resolve)
+            .catch(reject);
         });
     }
 });
